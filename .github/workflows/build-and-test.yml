@@ -35,13 +35,9 @@ jobs:
           libfoo.a
           libbar.a
 
-    - name: Compile sources
-      run: |
-        ls -al 
-        pwd
-
         # Create a new tag based on the commit SHA
-
+        
+    - uses: actions/upload-artifact@v4
     - name: Create Tag
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
@@ -76,6 +72,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: compiled-binaries
+        asset_path: |
+          /home/runner/work/Demo/Demo/src/foo-test
+          /home/runner/work/Demo/Demo/libfoo.a
+          /home/runner/work/Demo/Demo/libbar.a
         asset_name: my-artifact.zip
         asset_content_type: application/zip
