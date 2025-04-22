@@ -35,9 +35,13 @@ jobs:
           libfoo.a
           libbar.a
 
+    - name: Compile sources
+      run: |
+        ls -al 
+        pwd
+
         # Create a new tag based on the commit SHA
 
-    - uses: actions/checkout@v2
     - name: Create Tag
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
