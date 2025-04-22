@@ -40,7 +40,7 @@ jobs:
         git tag $TAG_NAME
         git remote remove origin
         echo "${{ secrets.GIT_TOKEN }}"
-        git remote add origin https://arintech12:${GIT_TOKEN}@github.com/arintech12/Demo.git
+        git remote add origin https://arintech12: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@github.com/arintech12/Demo.git
         git remote -v
         git push origin $TAG_NAME
 
