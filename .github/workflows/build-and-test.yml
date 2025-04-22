@@ -49,4 +49,3 @@ jobs:
         body: |
           Release created automatically by GitHub Actions.
         draft: false
-  
