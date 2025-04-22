@@ -30,11 +30,15 @@ jobs:
 
     - uses: actions/checkout@v2
     - name: Create Tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
         echo "Generated tag: $TAG_NAME"
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git remote remove origin 
+        git remote add origin https://arintech12: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@github.com/arintech12/Demo.git
         git tag $TAG_NAME
         git push origin $TAG_NAME
 
