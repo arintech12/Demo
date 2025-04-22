@@ -26,6 +26,15 @@ jobs:
     - name: Run tests
       run: make test
 
+    - name: Upload compiled binaries
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled-binaries
+        path: |
+          src/foo-test
+          libfoo.a
+          libbar.a
+
         # Create a new tag based on the commit SHA
 
     - uses: actions/checkout@v2
@@ -54,3 +63,17 @@ jobs:
         body: |
           Release created automatically by GitHub Actions.
         draft: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: |
+          src/foo-test
+          libfoo.a
+          libbar.a
+        asset_name: my-artifact.zip
+        asset_content_type: application/zip
