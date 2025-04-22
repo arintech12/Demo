@@ -37,8 +37,6 @@ jobs:
         echo "Generated tag: $TAG_NAME"
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git remote remove origin 
-        git remote add origin https://x-access-token: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@github.com/arintech12/Demo.git
         git tag $TAG_NAME
         git push origin $TAG_NAME
 
