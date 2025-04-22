@@ -28,20 +28,14 @@ jobs:
 
         # Create a new tag based on the commit SHA
 
+    - uses: actions/checkout@v2
     - name: Create Tag
-      id: create_tag
-      env:
-         GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
         echo "Generated tag: $TAG_NAME"
-        git config user.name "arintech12"
-        git config user.email "github-actions@users.noreply.github.com"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git tag $TAG_NAME
-        git remote remove origin
-        echo "${{ secrets.GIT_TOKEN }}"
-        git remote add origin https://arintech12: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@github.com/arintech12/Demo.git
-        git remote -v
         git push origin $TAG_NAME
 
       # Create GitHub Release
