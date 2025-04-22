@@ -35,6 +35,7 @@ jobs:
       run: |
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
         echo "Generated tag: $TAG_NAME"
+        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git tag $TAG_NAME
@@ -48,8 +49,8 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
       with:
-        tag_name: $TAG_NAME
-        release_name: Release $TAG_NAME
+        tag_name: ${{ env.TAG_NAME }}
+        release_name: Release ${{ env.TAG_NAME }}
         body: |
           Release created automatically by GitHub Actions.
         draft: false
