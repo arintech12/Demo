@@ -33,7 +33,7 @@ jobs:
       run: |
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
         echo "Generated tag: $TAG_NAME"
-        git config user.name "GitHub Actions"
+        git config user.name "arintech12"
         git config user.email "github-actions@users.noreply.github.com"
         git tag $TAG_NAME
         git remote set-url origin https://arintech12:${{ secrets.GIT_TOKEN }}@github.com/arintech12/Demo.git
