@@ -26,14 +26,14 @@ jobs:
     - name: Run tests
       run: make test
 
-    - name: Upload compiled binaries
-      uses: actions/upload-artifact@v4
-      with:
-        name: compiled-binaries
-        path: |
-          src/foo-test
-          libfoo.a
-          libbar.a
+   # - name: Upload compiled binaries
+   #   uses: actions/upload-artifact@v4
+   #   with:
+   #     name: compiled-binaries
+   #     path: |
+   #       src/foo-test
+   #       libfoo.a
+   #       libbar.a
 
         # Create a new tag based on the commit SHA
 
