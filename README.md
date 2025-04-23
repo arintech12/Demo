@@ -1,7 +1,7 @@
 Compiling C applications with Codefresh
 =============
 
-This project is a C project with `make`.
+This project  is a C project with `make`.
 The project also contains tests 
 
 ## Local usage
