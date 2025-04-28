@@ -49,7 +49,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git tag $TAG_NAME
-        git push origin $TAG_NAME
+        git push https://$GITHUB_ACTOR:${{ secrets.GH_PERSONAL_TOKEN }}@github.com/codefresh-contrib/c-sample-app.git $TAG_NAME
 
       # Create GitHub Release
 
