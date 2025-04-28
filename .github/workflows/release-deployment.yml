@@ -20,3 +20,4 @@ jobs:
           tag: $TAG
           fileName: my-app.zip
           out-file-path: ./deployment
+          token: ${{ secrets.GITHUB_TOKEN }}
