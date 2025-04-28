@@ -44,6 +44,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout main repository
+      uses: actions/checkout@v3
+      with:
+        repository: codefresh-contrib/c-sample-app
+        ref: master
+
+    - name: Set up GCC
+      run: sudo apt-get update && sudo apt-get install -y build-essential
+
+    - name: Compile sources
+      run: make
+
+    - name: Run tests
+      run: make test  
     - name: Run tests
       run: |
          make test
