@@ -66,10 +66,10 @@ jobs:
         draft: false
         prerelease: false
         
-    #- name: Download artifact
-    #  uses: actions/download-artifact@v2
-    #  with:
-    #    name: my-app-zip
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: my-app-zip
          
     - name: Upload zipped artifact to Release
       uses: actions/upload-release-asset@v1
