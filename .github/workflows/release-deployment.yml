@@ -21,7 +21,7 @@ jobs:
 
       - name: Unzip Artifact
         run: |
-          unzip ./artifacts/my-app.zip -d ./deploy
+          unzip ./deployment/my-app.zip -d ./app
 
       - name: Deploy to ${{ github.event.inputs.environment }}
         run: |
