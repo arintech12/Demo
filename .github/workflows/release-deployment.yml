@@ -13,11 +13,18 @@ jobs:
     steps:
       - name: Download Release artifact
         uses: robinraju/release-downloader@v1.8
-        env:
-          TAG: ${{ github.event.inputs.TAG }}
         with:
           repository: ${{ github.repository }}
           tag: ${{ github.event.inputs.TAG }}
           fileName: my-app.zip
           out-file-path: ./deployment
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Unzip Artifact
+        run: |
+          unzip ./artifacts/my-app.zip -d ./deploy
+
+      - name: Deploy to ${{ github.event.inputs.environment }}
+        run: |
+           ls -al 
+
+
