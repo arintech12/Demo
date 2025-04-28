@@ -13,5 +13,6 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           name: my-app.zip
+          repo: ${{ github.repository }}
           path: ./artifacts
           search_artifacts: true
