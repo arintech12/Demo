@@ -1,9 +1,6 @@
 name: deploy
 
 on:
-  push:
-    branches:
-      - release  
   workflow_dispatch:
     inputs:
       TAG:
