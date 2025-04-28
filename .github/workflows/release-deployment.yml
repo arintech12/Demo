@@ -14,7 +14,7 @@ jobs:
       - name: Download Release artifact
         uses: robinraju/release-downloader@v1.8
         env:
-          ENVIRONMENT: ${{ github.event.inputs.TAG }}
+          TAG: ${{ github.event.inputs.TAG }}
         with:
           repository: ${{ github.repository }}
           tag: $TAG
