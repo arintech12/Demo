@@ -48,8 +48,11 @@ jobs:
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git remote -v
+        git remote set-url origin https://$GITHUB_ACTOR:${{ secrets.GH_PERSONAL_TOKEN }}@github.com/codefresh-contrib/c-sample-app.git        
+        git remote -v
         git tag $TAG_NAME
-        git push https://$GITHUB_ACTOR:${{ secrets.GH_PERSONAL_TOKEN }}@github.com/codefresh-contrib/c-sample-app.git $TAG_NAME
+        git push origin $TAG_NAME
 
       # Create GitHub Release
 
