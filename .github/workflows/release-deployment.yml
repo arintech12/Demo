@@ -4,15 +4,22 @@ on:
   push:
     branches:
       - release  
+  workflow_dispatch:
+    inputs:
+      TAG:
+        description: 'Add Tag to deploy'
+        required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifact from triggered workflow
-        uses: dawidd6/action-download-artifact@v2
+      - name: Download Release artifact
+        uses: robinraju/release-downloader@v1.8
+        env:
+          ENVIRONMENT: ${{ github.event.inputs.TAG }}
         with:
-          name: my-app.zip
-          repo: ${{ github.repository }}
-          path: ./artifacts
-          search_artifacts: true
+          repository: ${{ github.repository }}
+          tag: $TAG
+          fileName: my-app.zip
+          out-file-path: ./deployment
