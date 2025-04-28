@@ -43,11 +43,8 @@ jobs:
     needs: build  # This ensures that the release job runs after the build job completes
 
     steps:
-    - name: Download build artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: my-app-zip
 
+    - uses: actions/checkout@v3
     - name: Create Tag
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
@@ -55,11 +52,16 @@ jobs:
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
         echo "Generated tag: $TAG_NAME"
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
-        git config user.email "action@github.com"
-        git config user.name "GitHub Action"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git tag $TAG_NAME
-        git push https://$GITHUB_ACTOR:${{ secrets.GH_PERSONAL_TOKEN }}@github.com/codefresh-contrib/c-sample-app.git $TAG_NAME
+        git push origin $TAG_NAME
 
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: my-app-zip
+        
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
