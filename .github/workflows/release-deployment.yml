@@ -8,7 +8,7 @@ on:
         required: true
 
 jobs:
-  deploy:
+  release-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Download Release artifact
