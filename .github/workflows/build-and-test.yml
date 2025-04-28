@@ -35,26 +35,23 @@ jobs:
         cp src/foo-test libfoo.a libbar.a artifacts/
         cd artifacts
         zip my-app.zip *
+        ls -al
 
         # Create a new tag based on the commit SHA
         
-    #- uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - name: Create Tag
       env:
-        #GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-        GH_PERSONAL_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
         echo "Generated tag: $TAG_NAME"
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git remote -v
-        echo $GITHUB_ACTOR
-        git remote set-url origin https://$GITHUB_ACTOR:${{ secrets.GH_PERSONAL_TOKEN }}@github.com/codefresh-contrib/c-sample-app.git        
-        git remote -v
         git tag $TAG_NAME
         git push origin $TAG_NAME
+
 
       # Create GitHub Release
 
