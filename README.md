@@ -3,7 +3,7 @@ Compiling C applications with Codefresh
 
 This project  is a C project with `make`.
 The project also contains tests 
-
+Test
 ## Local usage
 
 ```
