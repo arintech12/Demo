@@ -1,4 +1,4 @@
-Compiling C applications with Codefresh
+Compiling C applications with Codefresh - Demo purpose
 =============
 
 This project  is a C project with `make`.
