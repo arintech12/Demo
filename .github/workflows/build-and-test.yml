@@ -50,6 +50,10 @@ jobs:
     - name: Install Cppcheck
       run: choco install cppcheck -y
 
+    - name: Add Cppcheck to PATH
+      run: |
+        echo "C:\Program Files\Cppcheck" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+        
     - name: Run Cppcheck
       run: |
         cppcheck --enable=all --inconclusive --xml . 2> cppcheck-report.xml
