@@ -1,4 +1,4 @@
-name: Dummy Build Workflow
+name: Dummy Build Workflow 
 
 on:
   push:
