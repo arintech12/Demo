@@ -1,0 +1,173 @@
+name:  Build Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+    inputs:
+      build_option:
+        description: 'Build options'
+        required: true
+        default: 'b'
+        type: choice
+        options:
+          - b
+          - m
+
+      post_build_targets:
+        description: 'Post-build options'
+        required: true
+        default: 'bin'
+        type: choice
+        options:
+          - bin
+          - dph
+          - esp
+          - mh
+
+jobs:
+  checkout-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Simulate Build
+        run: |
+          echo "Running dummy build with option: ${{ github.event.inputs.build_option || 'b' }}"
+          mkdir -p output
+          echo "dummy binary" > output/file1.txt
+          echo "dummy hex" > output/file2.txt
+          echo "dummy map" > output/file3.txt
+          echo "dummy mdf" > output/file4.txt
+
+  upload-build-artifacts:
+    runs-on: ubuntu-latest
+    needs: checkout-and-build
+    steps:
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_Build_${{ github.sha }}
+          path: |
+            output/file1.txt
+            output/file2.txt
+            output/file3.txt
+            output/file4.txt
+
+  post-build-bin:
+    runs-on: ubuntu-latest
+    needs: upload-build-artifacts
+    if: github.event_name == 'push'
+    steps:
+      - name: Run BIN task
+        run: echo "Simulating BIN post-build step"
+
+      - name: Upload BIN Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_PostBuild_BIN_${{ github.sha }}
+          path: output/
+
+  post-build-dph:
+    runs-on: ubuntu-latest
+    needs: post-build-bin
+    if: github.event_name == 'push'
+    steps:
+      - name: Run DPH task
+        run: echo "Simulating DPH post-build step"
+
+      - name: Upload DPH Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_PostBuild_DPH_${{ github.sha }}
+          path: output/
+
+  post-build-esp:
+    runs-on: ubuntu-latest
+    needs: post-build-dph
+    if: github.event_name == 'push'
+    steps:
+      - name: Run ESP task
+        run: echo "Simulating ESP post-build step"
+
+      - name: Upload ESP Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_PostBuild_ESP_${{ github.sha }}
+          path: output/
+
+  post-build-mh:
+    runs-on: ubuntu-latest
+    needs: post-build-esp
+    if: github.event_name == 'push'
+    steps:
+      - name: Run MH task
+        run: echo "Simulating MH post-build step"
+
+      - name: Upload MH Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_PostBuild_MH_${{ github.sha }}
+          path: output/
+
+  post-build-bin-manual:
+    runs-on: ubuntu-latest
+    needs: upload-build-artifacts
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'bin'
+    steps:
+      - name: Manual BIN step
+        run: echo "Running manual BIN step"
+
+      - name: Upload BIN Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_Manual_BIN_${{ github.sha }}
+          path: output/
+
+  post-build-dph-manual:
+    runs-on: ubuntu-latest
+    needs: upload-build-artifacts
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'dph'
+    steps:
+      - name: Manual DPH step
+        run: echo "Running manual DPH step"
+
+      - name: Upload DPH Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_Manual_DPH_${{ github.sha }}
+          path: output/
+
+  post-build-esp-manual:
+    runs-on: ubuntu-latest
+    needs: upload-build-artifacts
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'esp'
+    steps:
+      - name: Manual ESP step
+        run: echo "Running manual ESP step"
+
+      - name: Upload ESP Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_Manual_ESP_${{ github.sha }}
+          path: output/
+
+  post-build-mh-manual:
+    runs-on: ubuntu-latest
+    needs: upload-build-artifacts
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'mh'
+    steps:
+      - name: Manual MH step (with DPH + ESP + MH)
+        run: |
+          echo "Simulating manual DPH step"
+          echo "Simulating manual ESP step"
+          echo "Simulating manual MH step"
+
+      - name: Upload MH Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dummy_Manual_MH_${{ github.sha }}
+          path: output/
