@@ -3,7 +3,7 @@ name: Dummy Build Workflow
 on:
   push:
     branches:
-      - master
+      - main
 
   workflow_dispatch:
     inputs:
@@ -43,6 +43,12 @@ jobs:
           echo "dummy map" > output/file3.txt
           echo "dummy mdf" > output/file4.txt
 
+      - name: Create dummy archive
+        run: |
+          cd output
+          zip ../my-app.zip file*.txt
+          cd ..
+
   upload-build-artifacts:
     runs-on: ubuntu-latest
     needs: checkout-and-build
@@ -50,12 +56,8 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_Build_${{ github.sha }}
-          path: |
-            output/file1.txt
-            output/file2.txt
-            output/file3.txt
-            output/file4.txt
+          name: my-app-zip
+          path: my-app.zip
 
   post-build-alpha:
     runs-on: ubuntu-latest
@@ -65,12 +67,6 @@ jobs:
       - name: Run ALPHA task
         run: echo "Simulating ALPHA post-build step"
 
-      - name: Upload ALPHA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_PostBuild_ALPHA_${{ github.sha }}
-          path: output/
-
   post-build-beta:
     runs-on: ubuntu-latest
     needs: post-build-alpha
@@ -78,12 +74,6 @@ jobs:
     steps:
       - name: Run BETA task
         run: echo "Simulating BETA post-build step"
-
-      - name: Upload BETA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_PostBuild_BETA_${{ github.sha }}
-          path: output/
 
   post-build-gamma:
     runs-on: ubuntu-latest
@@ -93,12 +83,6 @@ jobs:
       - name: Run GAMMA task
         run: echo "Simulating GAMMA post-build step"
 
-      - name: Upload GAMMA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_PostBuild_GAMMA_${{ github.sha }}
-          path: output/
-
   post-build-delta:
     runs-on: ubuntu-latest
     needs: post-build-gamma
@@ -106,12 +90,6 @@ jobs:
     steps:
       - name: Run DELTA task
         run: echo "Simulating DELTA post-build step"
-
-      - name: Upload DELTA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_PostBuild_DELTA_${{ github.sha }}
-          path: output/
 
   post-build-alpha-manual:
     runs-on: ubuntu-latest
@@ -121,12 +99,6 @@ jobs:
       - name: Manual ALPHA step
         run: echo "Running manual ALPHA step"
 
-      - name: Upload ALPHA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_Manual_ALPHA_${{ github.sha }}
-          path: output/
-
   post-build-beta-manual:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
@@ -134,12 +106,6 @@ jobs:
     steps:
       - name: Manual BETA step
         run: echo "Running manual BETA step"
-
-      - name: Upload BETA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_Manual_BETA_${{ github.sha }}
-          path: output/
 
   post-build-gamma-manual:
     runs-on: ubuntu-latest
@@ -149,31 +115,16 @@ jobs:
       - name: Manual GAMMA step
         run: echo "Running manual GAMMA step"
 
-      - name: Upload GAMMA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_Manual_GAMMA_${{ github.sha }}
-          path: output/
-
   post-build-delta-manual:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'delta'
     steps:
-      - name: Manual DELTA step (with beta + gamma + delta)
+      - name: Manual DELTA step (with BETA + GAMMA + DELTA)
         run: |
           echo "Simulating manual BETA step"
           echo "Simulating manual GAMMA step"
           echo "Simulating manual DELTA step"
-
-      - name: Upload DELTA Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Dummy_Manual_DELTA_${{ github.sha }}
-
-
-
-# Add this job at the end of your workflow file
 
   release:
     runs-on: ubuntu-latest
@@ -187,7 +138,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Tag format: vYYYY.MM.DD.HHMMSS
+          TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"
           echo "Generated tag: $TAG_NAME"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           git config --local user.email "action@github.com"
@@ -198,14 +149,8 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: Dummy_Build_${{ github.sha }}
-          path: release-output/
-
-      - name: Zip build artifacts
-        run: |
-          cd release-output
-          zip -r ../my-app.zip .
-          cd ..
+          name: my-app-zip
+          path: .
 
       - name: Create GitHub Release
         id: create_release
@@ -229,5 +174,3 @@ jobs:
           asset_path: my-app.zip
           asset_name: my-app.zip
           asset_content_type: application/zip
-
-          path: output/
