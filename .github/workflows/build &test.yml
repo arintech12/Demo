@@ -1,4 +1,4 @@
-name:Build Workflow 
+name: Build Workflow 
 
 on:
   push:
@@ -43,15 +43,14 @@ jobs:
           echo "dummy map" > output/file3.txt
           echo "dummy mdf" > output/file4.txt
 
- unit-tests:
-  runs-on: ubuntu-latest
+  unit-tests:
+     runs-on: ubuntu-latest
+     steps:
+     - name: Checkout repository
+       uses: actions/checkout@v3
 
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Run Dummy Unit Tests
-      run: |
+     - name: Run Dummy Unit Tests
+       run: |
         echo "Simulating unit test execution..."
 
         # Simulate environment variable setting
@@ -61,11 +60,11 @@ jobs:
         # Simulate test output by creating a dummy HTML report
         echo '<html><body><h1>Dummy Unit Test Report</h1><p>All tests passed successfully.</p></body></html>' > full_status.html
 
-    - name: Upload dummy test report
-      uses: actions/upload-artifact@v4
-      with:
-        name: full_status_report
-        path: full_status.html
+     - name: Upload dummy test report
+       uses: actions/upload-artifact@v4
+       with:
+         name: full_status_report
+         path: full_status.html
 
 
 
