@@ -1,9 +1,9 @@
-name:  Build Workflow 
+name: Dummy Build Workflow
 
 on:
   push:
     branches:
-      - master
+      - main
 
   workflow_dispatch:
     inputs:
@@ -19,13 +19,13 @@ on:
       post_build_targets:
         description: 'Post-build options'
         required: true
-        default: 'bin'
+        default: 'alpha'
         type: choice
         options:
-          - bin
-          - dph
-          - esp
-          - mh
+          - alpha
+          - beta
+          - gamma
+          - delta
 
 jobs:
   checkout-and-build:
@@ -57,117 +57,117 @@ jobs:
             output/file3.txt
             output/file4.txt
 
-  post-build-bin:
+  post-build-alpha:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
     if: github.event_name == 'push'
     steps:
-      - name: Run BIN task
-        run: echo "Simulating BIN post-build step"
+      - name: Run ALPHA task
+        run: echo "Simulating ALPHA post-build step"
 
-      - name: Upload BIN Artifacts
+      - name: Upload ALPHA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_PostBuild_BIN_${{ github.sha }}
+          name: Dummy_PostBuild_ALPHA_${{ github.sha }}
           path: output/
 
-  post-build-dph:
+  post-build-beta:
     runs-on: ubuntu-latest
-    needs: post-build-bin
+    needs: post-build-alpha
     if: github.event_name == 'push'
     steps:
-      - name: Run DPH task
-        run: echo "Simulating DPH post-build step"
+      - name: Run BETA task
+        run: echo "Simulating BETA post-build step"
 
-      - name: Upload DPH Artifacts
+      - name: Upload BETA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_PostBuild_DPH_${{ github.sha }}
+          name: Dummy_PostBuild_BETA_${{ github.sha }}
           path: output/
 
-  post-build-esp:
+  post-build-gamma:
     runs-on: ubuntu-latest
-    needs: post-build-dph
+    needs: post-build-beta
     if: github.event_name == 'push'
     steps:
-      - name: Run ESP task
-        run: echo "Simulating ESP post-build step"
+      - name: Run GAMMA task
+        run: echo "Simulating GAMMA post-build step"
 
-      - name: Upload ESP Artifacts
+      - name: Upload GAMMA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_PostBuild_ESP_${{ github.sha }}
+          name: Dummy_PostBuild_GAMMA_${{ github.sha }}
           path: output/
 
-  post-build-mh:
+  post-build-delta:
     runs-on: ubuntu-latest
-    needs: post-build-esp
+    needs: post-build-gamma
     if: github.event_name == 'push'
     steps:
-      - name: Run MH task
-        run: echo "Simulating MH post-build step"
+      - name: Run DELTA task
+        run: echo "Simulating DELTA post-build step"
 
-      - name: Upload MH Artifacts
+      - name: Upload DELTA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_PostBuild_MH_${{ github.sha }}
+          name: Dummy_PostBuild_DELTA_${{ github.sha }}
           path: output/
 
-  post-build-bin-manual:
+  post-build-alpha-manual:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'bin'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'alpha'
     steps:
-      - name: Manual BIN step
-        run: echo "Running manual BIN step"
+      - name: Manual ALPHA step
+        run: echo "Running manual ALPHA step"
 
-      - name: Upload BIN Artifacts
+      - name: Upload ALPHA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_Manual_BIN_${{ github.sha }}
+          name: Dummy_Manual_ALPHA_${{ github.sha }}
           path: output/
 
-  post-build-dph-manual:
+  post-build-beta-manual:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'dph'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'beta'
     steps:
-      - name: Manual DPH step
-        run: echo "Running manual DPH step"
+      - name: Manual BETA step
+        run: echo "Running manual BETA step"
 
-      - name: Upload DPH Artifacts
+      - name: Upload BETA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_Manual_DPH_${{ github.sha }}
+          name: Dummy_Manual_BETA_${{ github.sha }}
           path: output/
 
-  post-build-esp-manual:
+  post-build-gamma-manual:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'esp'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'gamma'
     steps:
-      - name: Manual ESP step
-        run: echo "Running manual ESP step"
+      - name: Manual GAMMA step
+        run: echo "Running manual GAMMA step"
 
-      - name: Upload ESP Artifacts
+      - name: Upload GAMMA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_Manual_ESP_${{ github.sha }}
+          name: Dummy_Manual_GAMMA_${{ github.sha }}
           path: output/
 
-  post-build-mh-manual:
+  post-build-delta-manual:
     runs-on: ubuntu-latest
     needs: upload-build-artifacts
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'mh'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.post_build_targets == 'delta'
     steps:
-      - name: Manual MH step (with DPH + ESP + MH)
+      - name: Manual DELTA step (with beta + gamma + delta)
         run: |
-          echo "Simulating manual DPH step"
-          echo "Simulating manual ESP step"
-          echo "Simulating manual MH step"
+          echo "Simulating manual BETA step"
+          echo "Simulating manual GAMMA step"
+          echo "Simulating manual DELTA step"
 
-      - name: Upload MH Artifacts
+      - name: Upload DELTA Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Dummy_Manual_MH_${{ github.sha }}
+          name: Dummy_Manual_DELTA_${{ github.sha }}
           path: output/
