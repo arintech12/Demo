@@ -3,7 +3,7 @@ name: Dummy Build Workflow
 on:
   push:
     branches:
-      - main
+      - master
 
   workflow_dispatch:
     inputs:
