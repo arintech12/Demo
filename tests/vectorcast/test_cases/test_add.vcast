@@ -1,0 +1,6 @@
+TEST_CASE test_add
+    DESCRIPTION "Verify addition function works correctly"
+    INPUTS 2, 3
+    EXPECTED_OUTPUT 5
+    EXECUTE add
+END_TEST_CASE
