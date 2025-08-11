@@ -1,0 +1,6 @@
+TEST_CASE test_multiply
+    DESCRIPTION "Verify multiplication function works correctly"
+    INPUTS 4, 5
+    EXPECTED_OUTPUT 20
+    EXECUTE multiply
+END_TEST_CASE
