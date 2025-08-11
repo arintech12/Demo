@@ -1,0 +1,6 @@
+TEST_CASE test_divide
+    DESCRIPTION "Verify division function works correctly"
+    INPUTS 10, 2
+    EXPECTED_OUTPUT 5.0
+    EXECUTE divide
+END_TEST_CASE
