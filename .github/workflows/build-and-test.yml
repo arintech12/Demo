@@ -16,9 +16,6 @@ jobs:
     steps:
     - name: Checkout main repository
       uses: actions/checkout@v3
-      with:
-        repository: codefresh-contrib/c-sample-app
-        ref: master
 
     - name: Set up GCC
       run: sudo apt-get update && sudo apt-get install -y build-essential
@@ -42,28 +39,28 @@ jobs:
         path: artifacts/my-app.zip
         
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
+
     steps:
-    - name: Checkout main repository
-      uses: actions/checkout@v3
-      with:
-        repository: codefresh-contrib/c-sample-app
-        ref: master
+    - uses: actions/checkout@v3
 
-    - name: Set up GCC
-      run: sudo apt-get update && sudo apt-get install -y build-essential
+    - name: Install Cppcheck
+      run: choco install cppcheck -y
 
-    - name: Compile sources
-      run: make
-
-    - name: Run tests
-      run: make test  
-    - name: Run tests
+    - name: Add Cppcheck to PATH
       run: |
-         make test
+        echo "C:\Program Files\Cppcheck" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+        
+    - name: Run Cppcheck
+      run: |
+        cppcheck --enable=all --inconclusive --xml . 2> cppcheck-report.xml
 
-    # Create a new tag based on the commit SHA
+    - name: Upload Cppcheck Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: cppcheck-report
+        path: cppcheck-report.xml
         
   release:
     runs-on: ubuntu-latest
